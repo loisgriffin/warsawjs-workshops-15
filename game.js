@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
       currentPlayer = 'playerA';
       field.addEventListener('click', fieldClickHandler);
       emptyFields = 9;
+    fields.forEach(field => field.removeAttribute('class'));
     }
   };
 
@@ -70,9 +71,6 @@ var column3 = fields[2].className + fields[5].className + fields[8].className;
 var diagonal1 = fields[0].className + fields[4].className + fields[8].className;
 var diagonal2 = fields[2].className + fields[4].className + fields[6].className;
 
-
-
-
 var boardCheck = [
 row1,
 row2,
@@ -84,17 +82,19 @@ diagonal1,
 diagonal2
 ];
 
-if (boardCheck.includes('redredred')) {
-alert("Red wins!");
+if(boardCheck.includes('redredred')) {
+  alert("Red wins!");
+  initGame();
 }
 
-if (boardCheck.includes('blueblueblue')) {
-alert("Blue wins!");
+if(boardCheck.includes('blueblueblue')) {
+  alert("Blue wins!");
+  initGame();
 }
 
-if (emptyFields === 0) {
-  alert('End of the game!');
-  return;
+if(emptyFields === 0) {
+  alert('Tie');
+  initGame();
 }
 
 /*
@@ -124,8 +124,5 @@ if (row1 === 'blueblueblue' ||
 }
 */
 
-
-
   }
-
-})
+});
