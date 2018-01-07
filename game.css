@@ -2,6 +2,17 @@
 	box-sizing: border-box;
 }
 
+h1, #round-info {
+	text-align: center;
+	font-family: Arial;
+	font-size: 15px;
+}
+
+#round-info {
+	background-color: #66a3ff;
+	color: white;
+}
+
 .board {
 	height: 300px;
 	width: 300px;
@@ -22,4 +33,11 @@
 
 .blue {
 	background-color: cornflowerblue;
+}
+
+#reset-score {
+	background-color: #FFF;
+	padding: 7px 10px;
+	border: 1px solid #CCC;
+	text-transform: uppercase;
 }

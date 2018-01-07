@@ -1,13 +1,46 @@
 document.addEventListener('DOMContentLoaded', function() {
+  var resetButton = document.getElementById('reset-score');
 
   var playerClasses = {
     'playerA': 'red',
     'playerB': 'blue'
   };
+
+  var scores = {
+    'playerA': 0,
+    'playerB': 0
+  }
+
   var currentPlayer;
   var emptyFields;
 
   initGame();
+
+  resetButton.addEventListener('click', function() {
+    scores['playerA'] = 0;
+    scores['playerB'] = 0;
+
+        displayPlayerScore('playerA');
+        displayPlayerScore('playerB');
+  });
+
+  function displayPlayerScore(player) {
+      var score = document.getElementById(`${player}-score`);
+      score.innerHTML = `${player} score: ${scores[player]}`;
+  }
+
+  function updatePlayerScore(player) {
+      scores[player]++;
+  }
+
+
+
+  function displayRoundInformation() {
+    var round = document.getElementById('round-info');
+    round.className = playerClasses[currentPlayer];
+    round.innerHTML = `Round for ${currentPlayer}`;
+  }
+
 
   function initGame() {
     var fields = document.querySelectorAll('.board > div');
@@ -15,16 +48,18 @@ document.addEventListener('DOMContentLoaded', function() {
     for (let i =0; i < fields.length; i++) {
       let field = fields[i]
       console.log(field)
-      currentPlayer = 'playerA';
-      field.addEventListener('click', fieldClickHandler);
-      emptyFields = 9;
+    currentPlayer = 'playerA';
+    field.addEventListener('click', fieldClickHandler);
+    emptyFields = 9;
     fields.forEach(field => field.removeAttribute('class'));
+
+    displayRoundInformation();
+    displayPlayerScore('playerA');
+    displayPlayerScore('playerB');
     }
   };
 
   function fieldClickHandler() {
-    console.log("Hello", this)
-
     var playerClass = playerClasses[currentPlayer];
     this.classList.add(playerClass);
 
@@ -37,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
       currentPlayer = 'playerA';
     }
 
+    displayRoundInformation();
     this.removeEventListener('click', fieldClickHandler);
     checkWinner();
   };
@@ -58,44 +94,54 @@ document.addEventListener('DOMContentLoaded', function() {
         */
 
 // Horizontal win configurations 012, 345, 678
-var row1 = fields[0].className + fields[1].className + fields[2].className;
-var row2 = fields[3].className + fields[4].className + fields[5].className;
-var row3 = fields[6].className + fields[7].className + fields[8].className;
+    var row1 = fields[0].className + fields[1].className + fields[2].className;
+    var row2 = fields[3].className + fields[4].className + fields[5].className;
+    var row3 = fields[6].className + fields[7].className + fields[8].className;
 
 // Vertical win configurations 036, 147, 258
-var column1 = fields[0].className + fields[3].className + fields[6].className;
-var column2 = fields[1].className + fields[4].className + fields[7].className;
-var column3 = fields[2].className + fields[5].className + fields[8].className;
+    var column1 = fields[0].className + fields[3].className + fields[6].className;
+    var column2 = fields[1].className + fields[4].className + fields[7].className;
+    var column3 = fields[2].className + fields[5].className + fields[8].className;
 
 	// Diagonal win configurations 048, 246
-var diagonal1 = fields[0].className + fields[4].className + fields[8].className;
-var diagonal2 = fields[2].className + fields[4].className + fields[6].className;
+    var diagonal1 = fields[0].className + fields[4].className + fields[8].className;
+    var diagonal2 = fields[2].className + fields[4].className + fields[6].className;
 
-var boardCheck = [
-row1,
-row2,
-row3,
-column1,
-column2,
-column3,
-diagonal1,
-diagonal2
-];
+    var boardCheck = [
+    row1,
+    row2,
+    row3,
+    column1,
+    column2,
+    column3,
+    diagonal1,
+    diagonal2
+    ];
 
-if(boardCheck.includes('redredred')) {
-  alert("Red wins!");
-  initGame();
-}
+    if(boardCheck.includes('redredred')) {
+      setTimeout (() => {
+        alert("Red wins!");
+        updatePlayerScore('playerA');
+        initGame();
+      }, 100);
+    }
 
-if(boardCheck.includes('blueblueblue')) {
-  alert("Blue wins!");
-  initGame();
-}
+    if(boardCheck.includes('blueblueblue')) {
+      setTimeout (() => {
+        alert("Blue wins!");
+        updatePlayerScore('playerB');
+        initGame();
+      }, 100);
+    }
 
-if(emptyFields === 0) {
-  alert('Tie');
-  initGame();
-}
+    if(emptyFields === 0) {
+    setTimeout (() => {
+      alert('Tie');
+      initGame();
+    }, 100);
+      }
+    }
+});
 
 /*
 // Longer way to check the above
@@ -123,6 +169,3 @@ if (row1 === 'blueblueblue' ||
   return;
 }
 */
-
-  }
-});
